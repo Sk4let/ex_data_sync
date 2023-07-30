@@ -8,15 +8,18 @@ end
 
 if Config.events.setJob then
     AddEventHandler(Config.events.setJob, function(playerId, job, lastJob)
-        if job.grade ~= lastJob.grade then
-            Player(playerId).state:set(
-                "job",
-                { name = job.name or '', grade = job.grade or 0, label = job.label or '' },
-                true
-            )
+        Player(playerId).state:set(
+            "job",
+            { name = job.name or '', grade = job.grade or 0, label = job.label or '' },
+            true
+        )
+        if GlobalState[("dutyCount.%s"):format(lastJob.name)] then
             if GlobalState[("dutyCount.%s"):format(lastJob.name)] > 0 then
                 GlobalState[("dutyCount.%s"):format(lastJob.name)] -= 1
             end
+        end
+
+        if GlobalState[("dutyCount.%s"):format(job.name)] then
             GlobalState[("dutyCount.%s"):format(job.name)] += 1
         end
     end)
