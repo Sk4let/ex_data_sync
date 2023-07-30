@@ -1,3 +1,24 @@
+-- Helper function to update duty count in GlobalState
+local function updateDutyCount(jobName, increment)
+    if GlobalState[("dutyCount.%s"):format(jobName)] then
+        GlobalState[("dutyCount.%s"):format(jobName)] = GlobalState[("dutyCount.%s"):format(jobName)] + increment
+    end
+end
+
+-- Helper function to set player's job state and update duty count
+local function setPlayerJobState(playerId, job)
+    Player(playerId).state:set(
+        "job",
+        {
+            name = job.name or '',
+            grade = job.grade or 0,
+            label = job.label or ''
+        },
+        true
+    )
+end
+
+-- Initialize totalPlayers and dutyCount for each job
 GlobalState["totalPlayers"] = GetNumPlayerIndices()
 
 if Config.jobList then
@@ -6,42 +27,26 @@ if Config.jobList then
     end
 end
 
+-- Event handler for when a player's job is set
 if Config.events.setJob then
     AddEventHandler(Config.events.setJob, function(playerId, job, lastJob)
-        Player(playerId).state:set(
-            "job",
-            { name = job.name or '', grade = job.grade or 0, label = job.label or '' },
-            true
-        )
-        if GlobalState[("dutyCount.%s"):format(lastJob.name)] then
-            if GlobalState[("dutyCount.%s"):format(lastJob.name)] > 0 then
-                GlobalState[("dutyCount.%s"):format(lastJob.name)] -= 1
-            end
-        end
-
-        if GlobalState[("dutyCount.%s"):format(job.name)] then
-            GlobalState[("dutyCount.%s"):format(job.name)] += 1
-        end
+        setPlayerJobState(playerId, job)
+        updateDutyCount(lastJob.name, -1)
+        updateDutyCount(job.name, 1)
     end)
 end
 
+-- Event handler for when a player disconnects
 if Config.events.playerDropped then
     AddEventHandler(Config.events.playerDropped, function(reason)
         GlobalState["totalPlayers"] = GetNumPlayerIndices()
     end)
 end
 
+-- Event handler for when a player's data is loaded
 if Config.events.playerLoaded then
     AddEventHandler(Config.events.playerLoaded, function(playerId, player)
-        Player(playerId).state:set(
-            "job",
-            { name = player.job.name or '', grade = player.job.grade or 0, label = player.job.label or '' },
-            true
-        )
+        setPlayerJobState(playerId, player.job)
         GlobalState["totalPlayers"] = GetNumPlayerIndices()
     end)
 end
-
-RegisterCommand('tg', function(a, b)
-    GlobalState["totalPlayers"] = math.random(1, 10)
-end)
