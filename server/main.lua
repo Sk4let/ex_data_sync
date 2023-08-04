@@ -1,7 +1,7 @@
 -- Helper function to update duty count in GlobalState
 local function updateDutyCount(jobName, increment)
     if GlobalState[("dutyCount.%s"):format(jobName)] then
-        GlobalState[("dutyCount.%s"):format(jobName)] = GlobalState[("dutyCount.%s"):format(jobName)] + increment
+        GlobalState[("dutyCount.%s"):format(jobName)] = math.max(0, GlobalState[("dutyCount.%s"):format(jobName)] + increment)
     end
 end
 
