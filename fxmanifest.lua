@@ -6,7 +6,7 @@ game 'gta5'
 
 --[[ Resource Information ]] --
 name 'ex_data_sync'
-version '0.0.1'
+version '0.0.2'
 description 'ex data using statebag & require onesync'
 author 'http://extend.studio/'
 repository 'https://github.com/Sk4let/ex_data_sync'
