@@ -7,10 +7,12 @@
 
 Config = {
 
+    framework = 'esx',
+
     events = {
         setJob = "esx:setJob",
         playerLoaded = "esx:playerLoaded",
-        playerDropped = "esx:playerDropped"
+        playerDropped = "playerDropped"
     },
 
     jobList = {
