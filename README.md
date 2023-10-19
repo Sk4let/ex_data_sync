@@ -124,7 +124,7 @@ end
 |-------|------|---------|--------|-------------|
 | `job` | table | - | {name, grade, label} or nil | Player's job array. |
 | `totalPlayers` | integer | `-` | integer or 0 | Total online players. |
-| `dutyCount.%s` | integer | `"default"` | `"police"`, `"ambulance"`, `"mechanic"`, `"any"` | integer or 0 | Total duty count. |
+| `dutyCount.%s` | integer  | `"police"`, `"ambulance"`, `"mechanic"`, `"any"` | integer or 0 | Total duty count. |
 
 ## Config
 
